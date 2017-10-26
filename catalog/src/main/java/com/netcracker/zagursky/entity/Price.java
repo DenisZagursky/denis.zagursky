@@ -1,4 +1,4 @@
-package com.netcracker.zagursky.entities;
+package com.netcracker.zagursky.entity;
 
 public class Price {
     private double price = 0.0;

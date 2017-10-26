@@ -1,4 +1,4 @@
-package com.netcracker.zagursky.entities;
+package com.netcracker.zagursky.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,10 @@ public class Offer {
 
     public void addTag(Tag tag) {
         tags.add(tag);
+    }
+
+    public boolean removeTag(Tag tag) {
+        return tags.remove(tag);
     }
 
     public int getId() {
