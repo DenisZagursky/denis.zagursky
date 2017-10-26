@@ -8,13 +8,11 @@ public class Offer {
     private String name;
     private String description;
     private Price price;
-    private List tags;
+    private List tags = new ArrayList<Tag>();
     private Category category;
 
     public Offer() {
-        category = new Category();
-        price = new Price();
-        tags = new ArrayList<Tag>();
+
     }
 
     public Offer(int id, String name, String description, double valuePrice, String nameCategory) {
@@ -23,7 +21,6 @@ public class Offer {
         this.description = description;
         price = new Price(valuePrice);
         category = new Category(nameCategory);
-        tags = new ArrayList<Tag>();
     }
 
     public void addTag(String tagName) {
@@ -61,16 +58,32 @@ public class Offer {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Price getPrice() {
         return price;
+    }
+
+    public void setPrice(Price price) {
+        this.price = price;
     }
 
     public List<Tag> getTags() {
@@ -79,6 +92,10 @@ public class Offer {
 
     public Category getCategory() {
         return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
