@@ -1,4 +1,4 @@
-package com.netcracker.zagursky.entities;
+package com.netcracker.zagursky.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +52,10 @@ public class Offer {
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
         return result;
+    }
+
+    public boolean removeTag(Tag tag) {
+        return tags.remove(tag);
     }
 
     public int getId() {
