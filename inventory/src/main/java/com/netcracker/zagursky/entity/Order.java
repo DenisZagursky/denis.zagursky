@@ -15,7 +15,7 @@ public class Order {
     private String costumersEmail;
     private Date orderDate;
     private Date dateOfThePayment;
-    private Boolean signOfThePayment;
+    private boolean signOfThePayment;
 
     public Order() {
     }
@@ -67,13 +67,12 @@ public class Order {
         if (description != order.description) return false;
         if (Double.compare(order.totalPrice, totalPrice) != 0) return false;
         if (totalCount != order.totalCount) return false;
+        if (signOfThePayment != order.signOfThePayment) return false;
         if (orderItems != null ? !orderItems.equals(order.orderItems) : order.orderItems != null) return false;
         if (costumersEmail != null ? !costumersEmail.equals(order.costumersEmail) : order.costumersEmail != null)
             return false;
         if (orderDate != null ? !orderDate.equals(order.orderDate) : order.orderDate != null) return false;
-        if (dateOfThePayment != null ? !dateOfThePayment.equals(order.dateOfThePayment) : order.dateOfThePayment != null)
-            return false;
-        return signOfThePayment != null ? signOfThePayment.equals(order.signOfThePayment) : order.signOfThePayment == null;
+        return dateOfThePayment != null ? dateOfThePayment.equals(order.dateOfThePayment) : order.dateOfThePayment == null;
     }
 
     @Override
@@ -90,7 +89,7 @@ public class Order {
         result = 31 * result + (costumersEmail != null ? costumersEmail.hashCode() : 0);
         result = 31 * result + (orderDate != null ? orderDate.hashCode() : 0);
         result = 31 * result + (dateOfThePayment != null ? dateOfThePayment.hashCode() : 0);
-        result = 31 * result + (signOfThePayment != null ? signOfThePayment.hashCode() : 0);
+        result = 31 * result + (signOfThePayment ? 1 : 0);
         return result;
     }
 
@@ -148,6 +147,13 @@ public class Order {
 
     public Boolean getSignOfThePayment() {
         return signOfThePayment;
+    }
+
+    public void setSignOfThePayment(boolean signOfThePayment) {
+        if (signOfThePayment) {
+            orderDate.setTime(System.currentTimeMillis());
+        }
+        this.signOfThePayment = signOfThePayment;
     }
 
     @Override
