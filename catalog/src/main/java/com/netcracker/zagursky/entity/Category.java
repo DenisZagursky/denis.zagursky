@@ -1,8 +1,19 @@
 package com.netcracker.zagursky.entity;
 
+import javax.persistence.*;
+import java.util.Objects;
 
+@Entity
+@Table(name = "category")
 public class Category {
+    @Id
+    @GeneratedValue
+    private int id;
+
     private String name;
+
+    @ManyToOne(optional = true)
+    private Offer offers;
 
     public Category() {
     }
@@ -15,15 +26,15 @@ public class Category {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Category)) return false;
-
         Category category = (Category) o;
-
-        return name != null ? name.equals(category.name) : category.name == null;
+        return id == category.id &&
+                Objects.equals(name, category.name) &&
+                Objects.equals(offers, category.offers);
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return Objects.hash(id, name, offers);
     }
 
     public String getName() {
@@ -36,8 +47,19 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "name='" + name + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("Category{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", offers=").append(offers);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    public Offer getOffers() {
+        return offers;
+    }
+
+    public void setOffers(Offer offers) {
+        this.offers = offers;
     }
 }

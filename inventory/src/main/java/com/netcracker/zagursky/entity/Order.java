@@ -1,12 +1,16 @@
 package com.netcracker.zagursky.entity;
 
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 public class Order {
+
     private int id;
+
     private int name;
     private int description;
     private double totalPrice;

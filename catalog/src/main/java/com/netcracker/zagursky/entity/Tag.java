@@ -1,7 +1,18 @@
 package com.netcracker.zagursky.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Objects;
 
+@Entity
+@Table(name = "tag")
 public class Tag {
+    @Id
+    @GeneratedValue
+    private int id;
+
     private String name;
 
     public Tag() {
@@ -15,15 +26,14 @@ public class Tag {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Tag)) return false;
-
         Tag tag = (Tag) o;
-
-        return name != null ? name.equals(tag.name) : tag.name == null;
+        return id == tag.id &&
+                Objects.equals(name, tag.name);
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return Objects.hash(id, name);
     }
 
     public String getName() {
@@ -36,8 +46,10 @@ public class Tag {
 
     @Override
     public String toString() {
-        return "Tag{" +
-                "name='" + name + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("Tag{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

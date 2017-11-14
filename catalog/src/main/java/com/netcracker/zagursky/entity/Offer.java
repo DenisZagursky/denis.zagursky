@@ -1,30 +1,46 @@
 package com.netcracker.zagursky.entity;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "offer")
 public class Offer {
+    @Id
+    @GeneratedValue
     private int id;
+
     private String name;
     private String description;
+    @OneToOne(cascade = CascadeType.ALL)
     private Price price;
-    private List tags = new ArrayList<Tag>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "offertag", joinColumns = {
+            @JoinColumn(name = "offer_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = false)
+
+            })
+    private List<Tag> tags = new ArrayList<Tag>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     public Offer() {
 
     }
 
-    public Offer(int id, String name, String description, double valuePrice, String nameCategory) {
-        this.id = id;
+    public Offer(String name, String description, double valuePrice, String nameCategory) {
         this.name = name;
         this.description = description;
         price = new Price(valuePrice);
         category = new Category(nameCategory);
     }
 
-    public void addTag(String tagName) {
-        tags.add(new Tag(tagName));
+    public void addTag(Tag tag) {
+        tags.add(tag);
     }
 
 
