@@ -7,8 +7,11 @@ import java.util.List;
 /**
  * Created by Dzenyaa on 14.11.2017.
  */
-public  class GenericDaoImpl<T,ID> implements GenericDao {
-    public T findById(Object o) {
+public abstract   class GenericDaoImpl<T,ID> implements GenericDao {
+
+
+    public T findById(ID id) {
+
         return null;
     }
 
@@ -16,7 +19,7 @@ public  class GenericDaoImpl<T,ID> implements GenericDao {
         return null;
     }
 
-    public void save(T entity) {
+    public void save(Object entity) {
 
     }
 

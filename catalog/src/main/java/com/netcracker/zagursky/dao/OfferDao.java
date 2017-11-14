@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Dzenyaa on 08.11.2017.
  */
 public interface OfferDao extends GenericDao<Offer,Long> {
-    public Offer findByName(String name);
-    public List<Offer> findByTag(String tagName);
-    public List<Offer> findByCategory(String categoryName);
+     Offer findByName(String name);
+     List<Offer> findByTag(String tagName);
+     List<Offer> findByCategory(String categoryName);
 }
