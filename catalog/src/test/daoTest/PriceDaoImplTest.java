@@ -2,7 +2,9 @@ package daoTest;
 
 import com.netcracker.zagursky.dao.impl.PriceDaoImpl;
 import com.netcracker.zagursky.entity.Price;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 

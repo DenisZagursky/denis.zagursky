@@ -5,12 +5,9 @@ import com.netcracker.zagursky.entity.Offer;
 import com.netcracker.zagursky.entity.Tag;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 
 public class OfferDaoImplTest {
