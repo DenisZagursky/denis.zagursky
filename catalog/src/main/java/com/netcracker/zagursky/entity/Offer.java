@@ -25,7 +25,6 @@ public class Offer {
     private List<Tag> tags = new ArrayList<Tag>();
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
     private Category category;
 
     public Offer() {

@@ -5,7 +5,7 @@ import com.netcracker.zagursky.entity.OrderItem;
 
 import java.util.List;
 
-public interface OrderDao extends GenericDao<Order,Long> {
-    public List<OrderItem> getOrderItems();
+public interface OrderDao extends GenericDao<Order,Integer> {
+    public List<OrderItem> getOrderItems(int id);
 
 }

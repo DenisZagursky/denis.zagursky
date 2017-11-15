@@ -16,8 +16,10 @@ public class EntityManagerService {
     }
 
     private static class Holder {
+
         private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistenceCatalog");
         private static EntityManager entityManager = entityManagerFactory.createEntityManager();
+
     }
 
 

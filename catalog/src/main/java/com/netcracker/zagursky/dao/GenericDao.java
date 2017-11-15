@@ -8,7 +8,7 @@ public interface GenericDao<T, ID> {
 
     List<T> findAll();
 
-    void save(T entity);
+    void persist(T entity);
 
     void delete(T entity);
 

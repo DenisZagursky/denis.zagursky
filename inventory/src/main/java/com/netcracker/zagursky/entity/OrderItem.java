@@ -1,22 +1,31 @@
 package com.netcracker.zagursky.entity;
 
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Entity
+@Table(name = "OrderItem")
 public class OrderItem {
+    @Id
+    @GeneratedValue
     private int id;
+
     private String name;
     private String description;
-    private List tags = new ArrayList<String>();
+    @ElementCollection
+    @CollectionTable(name = "tagForOrderItem",joinColumns = @JoinColumn(name="orderitem_id"))
+    @Column(name = "tags")
+    private List<String> tags = new ArrayList<String>();
     private double price;
     private String category;
+
+
 
     public OrderItem() {
     }
 
-    public OrderItem(int id, String name, String description, double price, String category) {
-        this.id = id;
+    public OrderItem( String name, String description, double price, String category) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -116,4 +125,5 @@ public class OrderItem {
                 ", category='" + category + '\'' +
                 '}';
     }
+
 }
