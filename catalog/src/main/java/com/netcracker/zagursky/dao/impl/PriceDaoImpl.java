@@ -2,18 +2,24 @@ package com.netcracker.zagursky.dao.impl;
 
 import com.netcracker.zagursky.dao.PriceDao;
 import com.netcracker.zagursky.entity.Price;
+import com.netcracker.zagursky.exceptions.BdException;
 
 
 public class PriceDaoImpl extends GenericDaoImpl<Price, Integer> implements PriceDao {
+    public static final String QUERY_GET_BY_VALUE = "SELECT c FROM Price c WHERE c.price=:custName";
+
     {
         setClass(Price.class);
     }
 
-    public Price getByValue(double value) {
-        return (Price) entityManager.createQuery(
-                "SELECT c FROM Price c WHERE c.price=:custName")
-                .setParameter("custName", value)
-                .setMaxResults(1)
-                .getSingleResult();
+    public Price getByValue(double value) throws Exception {
+       try {
+           return (Price) entityManager.createQuery(QUERY_GET_BY_VALUE)
+                   .setParameter("custName", value)
+                   .setMaxResults(1)
+                   .getSingleResult();
+       } catch (IllegalArgumentException ex) {
+           throw new BdException("not valid arguments", ex);
+       }
     }
 }
