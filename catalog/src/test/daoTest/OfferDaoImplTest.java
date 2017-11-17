@@ -13,10 +13,11 @@ import static org.junit.Assert.*;
 public class OfferDaoImplTest {
     static Offer offer;
     static Tag tag;
-    static OfferDaoImpl genericDao= new OfferDaoImpl();;
+    static OfferDaoImpl genericDao = new OfferDaoImpl();
+    ;
 
     @Before
-    public  void init() throws Exception {
+    public void init() throws Exception {
         offer = new Offer("testname", "testdescriptiong", 1.0, "NameCategory");
         tag = new Tag("testtag");
         offer.addTag(tag);
@@ -25,9 +26,11 @@ public class OfferDaoImplTest {
     }
 
     @After
-    public void after() throws Exception{
-        offer=null;
-        tag=null;    }
+    public void after() throws Exception {
+        offer = null;
+        tag = null;
+    }
+
     @Test
     public void getObject() throws Exception {
         genericDao.persist(offer);
@@ -35,6 +38,7 @@ public class OfferDaoImplTest {
         assertNotNull(genericDao.findById(offer.getId()));
         genericDao.delete(offer);
     }
+
     @Test
     public void getByName() throws Exception {
         genericDao.persist(offer);
@@ -42,6 +46,7 @@ public class OfferDaoImplTest {
         assertNotNull(genericDao.findByName(offer.getName()));
         genericDao.delete(offer);
     }
+
     @Test
     public void getTag() throws Exception {
         genericDao.persist(offer);
@@ -49,6 +54,7 @@ public class OfferDaoImplTest {
         assertNotNull(genericDao.findByTag(offer.getTags().get(0).getName()));
         genericDao.delete(offer);
     }
+
     @Test
     public void getByCategory() throws Exception {
         genericDao.persist(offer);

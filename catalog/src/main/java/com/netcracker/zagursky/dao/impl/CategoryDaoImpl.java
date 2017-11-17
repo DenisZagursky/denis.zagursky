@@ -2,7 +2,7 @@ package com.netcracker.zagursky.dao.impl;
 
 import com.netcracker.zagursky.dao.CategoryDao;
 import com.netcracker.zagursky.entity.Category;
-import com.netcracker.zagursky.exceptions.BdException;
+import com.netcracker.zagursky.exceptions.DbException;
 
 /**
  * Created by Dzenyaa on 14.11.2017.
@@ -14,14 +14,14 @@ public class CategoryDaoImpl extends GenericDaoImpl<Category, Integer> implement
         setClass(Category.class);
     }
 
-    public Category findByName(String categoryName) throws Exception {
+    public Category findByName(String categoryName) throws DbException {
         try {
             return (Category) entityManager.createQuery(QUERY_FIND_BY_NAME)
                     .setParameter("custName", categoryName)
                     .setMaxResults(1)
                     .getSingleResult();
-        } catch (IllegalArgumentException ex) {
-            throw new BdException("not valid arguments", ex);
+        } catch (Exception ex) {
+            throw new DbException("not valid arguments", ex);
         }
     }
 }

@@ -13,14 +13,15 @@ import static org.junit.Assert.assertNotNull;
  */
 public class CategoryDaoImplTest {
     static Category category;
-    static CategoryDaoImpl categoryDao= new CategoryDaoImpl();
+    static CategoryDaoImpl categoryDao = new CategoryDaoImpl();
 
     @Before
-    public  void init() throws Exception {
+    public void init() throws Exception {
         category = new Category("name");
     }
+
     @After
-    public  void after() throws Exception {
+    public void after() throws Exception {
         category = null;
     }
 

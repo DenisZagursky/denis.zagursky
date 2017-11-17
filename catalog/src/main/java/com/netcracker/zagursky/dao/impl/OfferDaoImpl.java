@@ -2,7 +2,7 @@ package com.netcracker.zagursky.dao.impl;
 
 import com.netcracker.zagursky.dao.OfferDao;
 import com.netcracker.zagursky.entity.Offer;
-import com.netcracker.zagursky.exceptions.BdException;
+import com.netcracker.zagursky.exceptions.DbException;
 
 import java.util.List;
 
@@ -18,35 +18,35 @@ public class OfferDaoImpl extends GenericDaoImpl<Offer, Integer> implements Offe
         setClass(Offer.class);
     }
 
-    public Offer findByName(String name) throws Exception {
+    public Offer findByName(String name) throws DbException {
         try {
             return (Offer) entityManager.createQuery(QUERY_FIND_BY_NAME)
                     .setParameter("custName", name)
                     .setMaxResults(1)
                     .getSingleResult();
-        } catch (IllegalArgumentException ex) {
-            throw new BdException("not valid arguments", ex);
+        } catch (Exception ex) {
+            throw new DbException("not valid arguments", ex);
         }
 
     }
 
-    public List<Offer> findByTag(String tagName) throws Exception {
+    public List<Offer> findByTag(String tagName) throws DbException {
         try {
             return entityManager.createQuery(QUERY_FIND_BY_TAG)
                     .setParameter("custName", tagName)
                     .getResultList();
-        } catch (IllegalArgumentException ex) {
-            throw new BdException("not valid arguments", ex);
+        } catch (Exception ex) {
+            throw new DbException("not valid arguments", ex);
         }
     }
 
-    public List<Offer> findByCategory(String categoryName) throws Exception {
+    public List<Offer> findByCategory(String categoryName) throws DbException {
         try {
             return entityManager.createQuery(QUERY_FIND_BY_CATEGORY)
                     .setParameter("custName", categoryName)
                     .getResultList();
-        } catch (IllegalArgumentException ex) {
-            throw new BdException("not valid arguments", ex);
+        } catch (Exception ex) {
+            throw new DbException("not valid arguments", ex);
         }
     }
 }

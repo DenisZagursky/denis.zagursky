@@ -11,14 +11,15 @@ import static org.junit.Assert.assertNotNull;
  */
 public class OrderDaoImplTest {
     static Order order;
-    static OrderDaoImpl categoryDao= new OrderDaoImpl();
+    static OrderDaoImpl categoryDao = new OrderDaoImpl();
 
     @Before
-    public  void init() throws Exception {
-        order = new Order("1",1,"1");
+    public void init() throws Exception {
+        order = new Order("1", 1, "1");
     }
+
     @After
-    public  void after() throws Exception {
+    public void after() throws Exception {
         order = null;
     }
 

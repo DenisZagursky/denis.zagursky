@@ -13,12 +13,13 @@ import static org.junit.Assert.assertNotNull;
  */
 public class TagDaoImplTest {
     static Tag tag;
-    static TagDaoImpl tagDao= new TagDaoImpl();
+    static TagDaoImpl tagDao = new TagDaoImpl();
 
     @Before
     public void init() throws Exception {
         tag = new Tag("name");
     }
+
     @After
     public void after() throws Exception {
         tag = null;

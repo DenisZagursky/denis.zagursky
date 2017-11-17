@@ -3,7 +3,7 @@ package com.netcracker.zagursky.dao.impl;
 import com.netcracker.zagursky.dao.OrderDao;
 import com.netcracker.zagursky.entity.Order;
 import com.netcracker.zagursky.entity.OrderItem;
-import com.netcracker.zagursky.exceptions.BdException;
+import com.netcracker.zagursky.exceptions.DbException;
 
 import java.util.List;
 
@@ -17,13 +17,13 @@ public class OrderDaoImpl extends GenericDaoImpl<Order, Integer> implements Orde
         type = Order.class;
     }
 
-    public List<OrderItem> getOrderItems(int id) throws Exception {
+    public List<OrderItem> getOrderItems(int id) throws DbException {
         try {
             return entityManager.createQuery(QUERY_FIND_ORDER_ITEMS)
                     .setParameter("custName", id)
                     .getResultList();
-        } catch (IllegalArgumentException ex) {
-            throw new BdException("not valid arguments", ex);
+        } catch (Exception ex) {
+            throw new DbException("not valid arguments", ex);
         }
     }
 }

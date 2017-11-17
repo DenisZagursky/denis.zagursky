@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class PriceDaoImplTest {
     static Price price;
-    static PriceDaoImpl priceDao=new PriceDaoImpl();
+    static PriceDaoImpl priceDao = new PriceDaoImpl();
 
     @Before
     public void init() throws Exception {
@@ -27,8 +27,9 @@ public class PriceDaoImplTest {
         assertNotNull(priceDao.getByValue(1.0));
         priceDao.delete(price);
     }
+
     @After
-    public  void after() throws Exception {
+    public void after() throws Exception {
         price = null;
 
     }

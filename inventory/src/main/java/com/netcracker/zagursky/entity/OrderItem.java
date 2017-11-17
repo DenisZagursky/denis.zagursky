@@ -4,6 +4,7 @@ package com.netcracker.zagursky.entity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
 @Table(name = "OrderItem")
 public class OrderItem {
@@ -14,18 +15,17 @@ public class OrderItem {
     private String name;
     private String description;
     @ElementCollection
-    @CollectionTable(name = "tagForOrderItem",joinColumns = @JoinColumn(name="orderitem_id"))
+    @CollectionTable(name = "tagForOrderItem", joinColumns = @JoinColumn(name = "orderitem_id"))
     @Column(name = "tags")
     private List<String> tags = new ArrayList<String>();
     private double price;
     private String category;
 
 
-
     public OrderItem() {
     }
 
-    public OrderItem( String name, String description, double price, String category) {
+    public OrderItem(String name, String description, double price, String category) {
         this.name = name;
         this.description = description;
         this.price = price;

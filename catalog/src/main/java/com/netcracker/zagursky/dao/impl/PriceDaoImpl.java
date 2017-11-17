@@ -2,7 +2,7 @@ package com.netcracker.zagursky.dao.impl;
 
 import com.netcracker.zagursky.dao.PriceDao;
 import com.netcracker.zagursky.entity.Price;
-import com.netcracker.zagursky.exceptions.BdException;
+import com.netcracker.zagursky.exceptions.DbException;
 
 
 public class PriceDaoImpl extends GenericDaoImpl<Price, Integer> implements PriceDao {
@@ -12,14 +12,14 @@ public class PriceDaoImpl extends GenericDaoImpl<Price, Integer> implements Pric
         setClass(Price.class);
     }
 
-    public Price getByValue(double value) throws Exception {
-       try {
-           return (Price) entityManager.createQuery(QUERY_GET_BY_VALUE)
-                   .setParameter("custName", value)
-                   .setMaxResults(1)
-                   .getSingleResult();
-       } catch (IllegalArgumentException ex) {
-           throw new BdException("not valid arguments", ex);
-       }
+    public Price getByValue(double value) throws DbException {
+        try {
+            return (Price) entityManager.createQuery(QUERY_GET_BY_VALUE)
+                    .setParameter("custName", value)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            throw new DbException("not valid arguments", ex);
+        }
     }
 }
