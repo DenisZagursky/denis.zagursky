@@ -1,19 +1,30 @@
 package daoTest;
 
-import com.netcracker.zagursky.dao.impl.PriceDaoImpl;
+import com.netcracker.zagursky.Application;
+import com.netcracker.zagursky.configuration.JpaConfiguration;
+import com.netcracker.zagursky.dao.PriceDao;
 import com.netcracker.zagursky.entity.Price;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Dzenyaa on 15.11.2017.
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {Application.class})
+@Import(JpaConfiguration.class)
 public class PriceDaoImplTest {
     static Price price;
-    static PriceDaoImpl priceDao = new PriceDaoImpl();
+    @Autowired
+    private PriceDao priceDao;
 
     @Before
     public void init() throws Exception {

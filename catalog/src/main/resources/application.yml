@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/catalogmodule
+    username: postgres
+    password: 1111
+  jooq:
+    sql-dialect: org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    properties:
+        hbm2ddl:
+          auto: create
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        current_session_context_class: thread
+

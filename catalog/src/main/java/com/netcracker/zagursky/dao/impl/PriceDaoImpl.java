@@ -3,8 +3,12 @@ package com.netcracker.zagursky.dao.impl;
 import com.netcracker.zagursky.dao.PriceDao;
 import com.netcracker.zagursky.entity.Price;
 import com.netcracker.zagursky.exceptions.DbException;
+import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 
+@Repository
+@Transactional(rollbackOn = DbException.class)
 public class PriceDaoImpl extends GenericDaoImpl<Price, Integer> implements PriceDao {
     public static final String QUERY_GET_BY_VALUE = "SELECT c FROM Price c WHERE c.price=:custName";
 

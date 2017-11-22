@@ -1,19 +1,30 @@
 package daoTest;
 
-import com.netcracker.zagursky.dao.impl.TagDaoImpl;
+import com.netcracker.zagursky.Application;
+import com.netcracker.zagursky.configuration.JpaConfiguration;
+import com.netcracker.zagursky.dao.TagDao;
 import com.netcracker.zagursky.entity.Tag;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Dzenyaa on 15.11.2017.
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {Application.class})
+@Import(JpaConfiguration.class)
 public class TagDaoImplTest {
     static Tag tag;
-    static TagDaoImpl tagDao = new TagDaoImpl();
+    @Autowired
+    private TagDao tagDao;
 
     @Before
     public void init() throws Exception {

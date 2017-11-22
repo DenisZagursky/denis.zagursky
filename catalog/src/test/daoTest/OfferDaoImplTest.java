@@ -1,27 +1,36 @@
 package daoTest;
 
-import com.netcracker.zagursky.dao.impl.OfferDaoImpl;
+import com.netcracker.zagursky.Application;
+import com.netcracker.zagursky.configuration.JpaConfiguration;
+import com.netcracker.zagursky.dao.OfferDao;
 import com.netcracker.zagursky.entity.Offer;
 import com.netcracker.zagursky.entity.Tag;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
 
-
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {Application.class})
+@Import(JpaConfiguration.class)
 public class OfferDaoImplTest {
+
     static Offer offer;
     static Tag tag;
-    static OfferDaoImpl genericDao = new OfferDaoImpl();
-    ;
+    @Autowired
+    private OfferDao genericDao;
 
     @Before
     public void init() throws Exception {
         offer = new Offer("testname", "testdescriptiong", 1.0, "NameCategory");
         tag = new Tag("testtag");
         offer.addTag(tag);
-
 
     }
 
@@ -33,10 +42,10 @@ public class OfferDaoImplTest {
 
     @Test
     public void getObject() throws Exception {
-        genericDao.persist(offer);
+        Offer on = genericDao.persist(offer);
         assertNotNull(genericDao.findAll());
         assertNotNull(genericDao.findById(offer.getId()));
-        genericDao.delete(offer);
+        genericDao.delete(on);
     }
 
     @Test
@@ -79,7 +88,7 @@ public class OfferDaoImplTest {
         Offer updateOffer = new Offer("1", "23", 1.0, "1");
         updateOffer.setId(offer.getId());
         genericDao.update(updateOffer);
-        assertSame("23", genericDao.findById(updateOffer.getId()).getDescription());
+        assertSame(Integer.valueOf("23"), Integer.valueOf(genericDao.findById(updateOffer.getId()).getDescription()));
         genericDao.deleteById(updateOffer.getId());
     }
 

@@ -1,19 +1,30 @@
 package daoTest;
 
-import com.netcracker.zagursky.dao.impl.CategoryDaoImpl;
+import com.netcracker.zagursky.Application;
+import com.netcracker.zagursky.configuration.JpaConfiguration;
+import com.netcracker.zagursky.dao.CategoryDao;
 import com.netcracker.zagursky.entity.Category;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Dzenyaa on 14.11.2017.
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {Application.class})
+@Import(JpaConfiguration.class)
 public class CategoryDaoImplTest {
     static Category category;
-    static CategoryDaoImpl categoryDao = new CategoryDaoImpl();
+    @Autowired
+    private CategoryDao categoryDao;
 
     @Before
     public void init() throws Exception {

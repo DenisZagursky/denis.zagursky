@@ -2,19 +2,20 @@ package com.netcracker.zagursky.dao.impl;
 
 import com.netcracker.zagursky.dao.GenericDao;
 import com.netcracker.zagursky.exceptions.DbException;
-import com.netcracker.zagursky.service.EntityManagerService;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
-
-public abstract class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
-
-
-    protected EntityManager entityManager = EntityManagerService.getInstance();
-    protected EntityTransaction transaction = entityManager.getTransaction();
+@Repository
+@Transactional(rollbackOn = DbException.class)
+public class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
+    @PersistenceContext
+    protected EntityManager entityManager;
     protected Class<T> type;
+
 
     protected final void setClass(Class<T> classToSet) {
         this.type = classToSet;
@@ -42,28 +43,19 @@ public abstract class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
 
     public T persist(T entity) throws DbException {
         try {
-            transaction.begin();
+
             entityManager.persist(entity);
-            transaction.commit();
             return entity;
 
         } catch (Exception ex) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new DbException("wrong persist object", ex);
         }
     }
 
     public void delete(T entity) throws DbException {
         try {
-            transaction.begin();
-            entityManager.remove(entity);
-            transaction.commit();
+            entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
         } catch (Exception ex) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new DbException("wrong delete object", ex);
         }
 
@@ -73,27 +65,17 @@ public abstract class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
     public void deleteById(ID id) throws DbException {
         try {
             T objectForRemove = entityManager.find(type, id);
-            transaction.begin();
             entityManager.remove(objectForRemove);
-            transaction.commit();
         } catch (Exception ex) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new DbException("wrong delete object", ex);
         }
     }
 
     public T update(T entity) throws DbException {
         try {
-            transaction.begin();
             entityManager.merge(entity);
-            transaction.commit();
             return entity;
         } catch (Exception ex) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new DbException("wrong update object", ex);
         }
     }
