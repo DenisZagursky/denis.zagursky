@@ -1,7 +1,7 @@
 package daoTest;
 
 import com.netcracker.zagursky.Application;
-import com.netcracker.zagursky.configuration.JpaConfiguration;
+import com.netcracker.zagursky.configuration.RepositoryConfiguration;
 import com.netcracker.zagursky.dao.TagDao;
 import com.netcracker.zagursky.entity.Tag;
 import org.junit.After;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-@Import(JpaConfiguration.class)
+@Import(RepositoryConfiguration.class)
 public class TagDaoImplTest {
     static Tag tag;
     @Autowired

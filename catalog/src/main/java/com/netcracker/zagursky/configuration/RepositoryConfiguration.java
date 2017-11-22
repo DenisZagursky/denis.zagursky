@@ -27,7 +27,7 @@ import java.util.Properties;
 @ComponentScan("com.netcracker.zagursky.dao.impl")
 @PropertySource(value = "classpath:application.yml")
 
-public class JpaConfiguration {
+public class RepositoryConfiguration {
 
     @Autowired
     private Environment env;

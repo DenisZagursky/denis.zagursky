@@ -1,7 +1,7 @@
 package daoTest;
 
 import com.netcracker.zagursky.Application;
-import com.netcracker.zagursky.configuration.JpaConfiguration;
+import com.netcracker.zagursky.configuration.RepositoryConfiguration;
 import com.netcracker.zagursky.dao.OfferDao;
 import com.netcracker.zagursky.entity.Offer;
 import com.netcracker.zagursky.entity.Tag;
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-@Import(JpaConfiguration.class)
+@Import(RepositoryConfiguration.class)
 public class OfferDaoImplTest {
 
     static Offer offer;
