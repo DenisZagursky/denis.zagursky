@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "orderP")
+@Table(name = "order_p")
 public class Order {
     @Id
     @GeneratedValue
     private int id;
 
     private String name;
-    private int description;
+    private String description;
     private double totalPrice;
     private int totalCount;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -33,7 +33,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(String name, int description, String costumersEmail) {
+    public Order(String name, String description, String costumersEmail) {
         this.name = name;
         this.description = description;
         this.costumersEmail = costumersEmail;
@@ -57,19 +57,17 @@ public class Order {
         return result;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return description == order.description &&
+        return id == order.id &&
                 Double.compare(order.totalPrice, totalPrice) == 0 &&
                 totalCount == order.totalCount &&
                 signOfThePayment == order.signOfThePayment &&
-                Objects.equals(id, order.id) &&
                 Objects.equals(name, order.name) &&
-                Objects.equals(orderItems, order.orderItems) &&
+                Objects.equals(description, order.description) &&
                 Objects.equals(costumersEmail, order.costumersEmail) &&
                 Objects.equals(orderDate, order.orderDate) &&
                 Objects.equals(dateOfThePayment, order.dateOfThePayment);
@@ -77,7 +75,7 @@ public class Order {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, totalPrice, totalCount, orderItems, costumersEmail, orderDate, dateOfThePayment, signOfThePayment);
+        return Objects.hash(id, name, description, totalPrice, totalCount, costumersEmail, orderDate, dateOfThePayment, signOfThePayment);
     }
 
     public int getId() {
@@ -96,11 +94,11 @@ public class Order {
         this.name = name;
     }
 
-    public int getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(int description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

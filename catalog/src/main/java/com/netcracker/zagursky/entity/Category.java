@@ -62,4 +62,12 @@ public class Category {
     public void setOffers(Offer offers) {
         this.offers = offers;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

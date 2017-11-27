@@ -6,11 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional(rollbackOn = DbException.class)
 public class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
     @PersistenceContext
     protected EntityManager entityManager;
@@ -52,17 +50,8 @@ public class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
         }
     }
 
-    public void delete(T entity) throws DbException {
-        try {
-            entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
-        } catch (Exception ex) {
-            throw new DbException("wrong delete object", ex);
-        }
 
-
-    }
-
-    public void deleteById(ID id) throws DbException {
+    public void delete(ID id) throws DbException {
         try {
             T objectForRemove = entityManager.find(type, id);
             entityManager.remove(objectForRemove);

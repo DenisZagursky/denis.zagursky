@@ -12,9 +12,7 @@ public interface GenericDao<T, ID> {
 
     T persist(T entity) throws DbException;
 
-    void delete(T entity) throws DbException;
-
-    void deleteById(ID id) throws DbException;
+    void delete(ID id) throws DbException;
 
     T update(T entity) throws DbException;
 
