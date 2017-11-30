@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,12 +22,31 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
     private OrderDao orderDao;
 
     @Override
-    @Transactional(readOnly = true)
-    public List<OrderItem> getOrderItems(int id) throws DbException {
-
-        return orderDao.getOrderItems(id);
-
+    public Order removeOrderItem(int idOrder, OrderItem orderItem) throws DbException {
+        Order order = orderDao.findById(idOrder);
+        order.removeOrderItem(orderItem);
+        orderDao.update(order);
+        return order;
     }
 
+    @Override
+    public Order addOrderItem(int idOrder, OrderItem orderItem) throws DbException {
 
+        Order order = orderDao.findById(idOrder);
+        order.addOrderItem(orderItem);
+        orderDao.update(order);
+        return order;
+    }
+
+    @Override
+    public List<Order> getCustomersOrders(String customerEmail) throws DbException {
+        List<Order> orders = orderDao.findAll();
+        List customersOrders = new ArrayList<Order>();
+        for (Order order : orders) {
+            if (order.getCostumersEmail().equals(customerEmail)) {
+                customersOrders.add(order);
+            }
+        }
+        return customersOrders;
+    }
 }

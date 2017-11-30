@@ -2,6 +2,7 @@ package service;
 
 import com.netcracker.zagursky.Application;
 import com.netcracker.zagursky.entity.Order;
+import com.netcracker.zagursky.entity.OrderItem;
 import com.netcracker.zagursky.service.OrderService;
 import org.junit.After;
 import org.junit.Before;
@@ -10,8 +11,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.Assert.assertNotNull;
 
 //import com.netcracker.zagursky.configuration.RepositoryConfiguration;
 
@@ -38,10 +37,20 @@ public class OrderServiceTest {
 
 
     @Test
-    public void getOrderItems() throws Exception {
+    public void addOrderItem() throws Exception {
         orderService.persist(order);
-        assertNotNull(orderService.getOrderItems(order.getId()));
+        OrderItem orderItem = new OrderItem("1", "1", 1, "1");
+        orderService.addOrderItem(order.getId(), orderItem);
         orderService.delete(order.getId());
     }
 
+    @Test
+    public void removeOrderItem() throws Exception {
+        orderService.persist(order);
+        OrderItem orderItem = new OrderItem("1", "1", 1, "1");
+        order = orderService.addOrderItem(order.getId(), orderItem);
+        orderItem.setId(2);
+        orderService.removeOrderItem(order.getId(), orderItem);
+        orderService.delete(order.getId());
+    }
 }

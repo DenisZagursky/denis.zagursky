@@ -49,12 +49,14 @@ public class Order {
     }
 
     public boolean removeOrderItem(OrderItem orderItem) {
-        Boolean result = orderItems.remove(orderItem);
-        if (result) {
+
+        if (orderItems.contains(orderItem)) {
+            orderItems.remove(orderItem);
             totalCount--;
             totalPrice -= orderItem.getPrice();
+            return true;
         }
-        return result;
+        return false;
     }
 
     @Override

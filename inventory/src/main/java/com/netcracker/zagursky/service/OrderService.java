@@ -10,6 +10,9 @@ import java.util.List;
  * Created by Dzenyaa on 23.11.2017.
  */
 public interface OrderService extends GenericService<Order, Integer> {
-    public List<OrderItem> getOrderItems(int id) throws DbException;
+    Order addOrderItem(int idOrder, OrderItem orderItem) throws DbException;
 
+    Order removeOrderItem(int idOrder, OrderItem orderItem) throws DbException;
+
+    List<Order> getCustomersOrders(String customerEmail) throws DbException;
 }
