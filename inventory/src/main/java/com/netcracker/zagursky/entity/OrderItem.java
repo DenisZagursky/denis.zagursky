@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "OrderItem")
+@Table(name = "order_item")
 public class OrderItem {
     @Id
     @GeneratedValue
@@ -14,16 +14,19 @@ public class OrderItem {
 
     private String name;
     private String description;
+
     @ElementCollection
     @CollectionTable(name = "tagForOrderItem", joinColumns = @JoinColumn(name = "orderitem_id"))
     @Column(name = "tags")
     private List<String> tags = new ArrayList<String>();
     private double price;
-    private String category;
 
+
+    private String category;
 
     public OrderItem() {
     }
+
 
     public OrderItem(String name, String description, double price, String category) {
         this.name = name;
@@ -125,5 +128,4 @@ public class OrderItem {
                 ", category='" + category + '\'' +
                 '}';
     }
-
 }

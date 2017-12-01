@@ -18,12 +18,8 @@ public class Order {
     private String description;
     private double totalPrice;
     private int totalCount;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "orderp_orderitem", joinColumns = {
-            @JoinColumn(name = "order_id", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "orderitem_id", nullable = false, updatable = false)
-
-            })
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "Cust_id")
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
     private String costumersEmail;
     private Date orderDate;
@@ -144,6 +140,7 @@ public class Order {
         }
         this.signOfThePayment = signOfThePayment;
     }
+
 
     @Override
     public String toString() {

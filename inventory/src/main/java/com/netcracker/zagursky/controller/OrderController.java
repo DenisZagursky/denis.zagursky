@@ -35,6 +35,18 @@ public class OrderController {
 
     }
 
+    @RequestMapping(value = "/orders", method = RequestMethod.GET)
+    public ResponseEntity getOrders() throws DbException {
+        List<Order> orders = orderService.findAll();
+        if (orders != null) {
+            return new ResponseEntity(orders, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        }
+    }
+
+
     @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
     public ResponseEntity getOrder(@PathVariable Integer id) throws DbException {
 
@@ -47,6 +59,16 @@ public class OrderController {
         }
     }
 
+    @RequestMapping(value = "/orders/email/{customerEmail}", method = RequestMethod.GET)
+    public ResponseEntity getCustomersOrders(@PathVariable String customerEmail) throws DbException {
+        List<Order> orders = orderService.getCustomersOrders(customerEmail);
+        if (orders != null) {
+            return new ResponseEntity(orders, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        }
+    }
 
     @RequestMapping(value = "/orders/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteOrder(@PathVariable Integer id) throws DbException {
@@ -61,12 +83,6 @@ public class OrderController {
         }
     }
 
-    @RequestMapping(value = "/orders/{id}/{orderItem}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws DbException {
-        return new ResponseEntity(orderService.removeOrderItem(id, orderItem), HttpStatus.OK);
-
-    }
-
     @RequestMapping(value = "/orders/{id}/{orderItem}", method = RequestMethod.PUT)
     public ResponseEntity putOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws DbException {
 
@@ -74,26 +90,10 @@ public class OrderController {
 
     }
 
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
-    public ResponseEntity getOrders() throws DbException {
-        List<Order> orders = orderService.findAll();
-        if (orders != null) {
-            return new ResponseEntity(orders, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+    @RequestMapping(value = "/orders/{id}/{orderItem}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws DbException {
+        return new ResponseEntity(orderService.removeOrderItem(id, orderItem), HttpStatus.OK);
 
-        }
-    }
-
-    @RequestMapping(value = "/orders/{customerEmail:.+}", method = RequestMethod.GET)
-    public ResponseEntity getCustomersOrders(@PathVariable String customerEmail) throws DbException {
-        List<Order> orders = orderService.getCustomersOrders(customerEmail);
-        if (orders != null) {
-            return new ResponseEntity(orders, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-
-        }
     }
 
     @ExceptionHandler(DbException.class)
