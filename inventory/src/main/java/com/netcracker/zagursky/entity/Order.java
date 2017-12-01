@@ -10,6 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "order_p")
 public class Order {
+
     @Id
     @GeneratedValue
     private int id;
@@ -19,7 +20,7 @@ public class Order {
     private double totalPrice;
     private int totalCount;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "Cust_id")
+    @JoinColumn(name = "order_id")
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
     private String costumersEmail;
     private Date orderDate;
@@ -157,4 +158,5 @@ public class Order {
                 ", signOfThePayment=" + signOfThePayment +
                 '}';
     }
+
 }

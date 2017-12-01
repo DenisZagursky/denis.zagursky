@@ -15,12 +15,13 @@ import java.util.List;
  * Created by Dzenyaa on 23.11.2017.
  */
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/orders")
 public class OrderController {
+
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping(value = "/orders", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity createOrder(@RequestBody Order order) throws DbException {
 
         orderService.persist(order);
@@ -28,14 +29,14 @@ public class OrderController {
 
     }
 
-    @RequestMapping(value = "/orders/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateOrder(@RequestBody Order order) throws DbException {
         orderService.update(order);
         return new ResponseEntity(HttpStatus.OK);
 
     }
 
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity getOrders() throws DbException {
         List<Order> orders = orderService.findAll();
         if (orders != null) {
@@ -47,7 +48,7 @@ public class OrderController {
     }
 
 
-    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public ResponseEntity getOrder(@PathVariable Integer id) throws DbException {
 
         Order order = orderService.findById(id);
@@ -59,7 +60,7 @@ public class OrderController {
         }
     }
 
-    @RequestMapping(value = "/orders/email/{customerEmail}", method = RequestMethod.GET)
+    @RequestMapping(value = "/email/{customerEmail}", method = RequestMethod.GET)
     public ResponseEntity getCustomersOrders(@PathVariable String customerEmail) throws DbException {
         List<Order> orders = orderService.getCustomersOrders(customerEmail);
         if (orders != null) {
@@ -70,7 +71,7 @@ public class OrderController {
         }
     }
 
-    @RequestMapping(value = "/orders/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteOrder(@PathVariable Integer id) throws DbException {
 
         Order order = orderService.findById(id);
@@ -83,14 +84,14 @@ public class OrderController {
         }
     }
 
-    @RequestMapping(value = "/orders/{id}/{orderItem}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/{orderItem}", method = RequestMethod.PUT)
     public ResponseEntity putOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws DbException {
 
         return new ResponseEntity(orderService.addOrderItem(id, orderItem), HttpStatus.OK);
 
     }
 
-    @RequestMapping(value = "/orders/{id}/{orderItem}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/{orderItem}", method = RequestMethod.DELETE)
     public ResponseEntity deleteOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws DbException {
         return new ResponseEntity(orderService.removeOrderItem(id, orderItem), HttpStatus.OK);
 
@@ -98,6 +99,7 @@ public class OrderController {
 
     @ExceptionHandler(DbException.class)
     public ResponseEntity handleDbException(DbException e) {
-        return new ResponseEntity(HttpStatus.BAD_GATEWAY);
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }
