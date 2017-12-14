@@ -51,7 +51,7 @@ public class InventoryServiceImpl implements InventoryService {
         List<Order> orders = inventoryClient.getCustumerOrder(email);
         List<Order> result = new ArrayList<>();
         for (Order order : orders) {
-            if (order.getSignOfThePayment()!=true) {
+            if (order.getSignOfThePayment() != true) {
                 result.add(order);
             }
         }
@@ -61,9 +61,9 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Double getTotalPriceOfCustomerOrders(String email) throws ClientException {
         List<Order> orders = inventoryClient.getCustumerOrder(email);
-        Double result=0.0;
+        Double result = 0.0;
         for (Order order : orders) {
-            result+=order.getTotalPrice();
+            result += order.getTotalPrice();
         }
         return result;
     }
@@ -79,7 +79,7 @@ public class InventoryServiceImpl implements InventoryService {
         List<Order> orders = inventoryClient.getOrders();
         List<Order> result = new ArrayList<>();
         for (Order order : orders) {
-            if (order.getSignOfThePayment()==status) {
+            if (order.getSignOfThePayment() == status) {
                 result.add(order);
             }
         }
@@ -98,6 +98,6 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public void deleteOrder(Integer id) throws ClientException {
-         inventoryClient.deleteOrder(id);
+        inventoryClient.deleteOrder(id);
     }
 }

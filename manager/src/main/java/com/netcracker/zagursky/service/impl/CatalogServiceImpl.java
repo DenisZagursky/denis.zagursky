@@ -22,12 +22,11 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public List<Offer> getOffersByTags(List<String> tags) throws ClientException {
-        StringBuilder builder=new StringBuilder();
-        for(String tag:tags)
-        {
+        StringBuilder builder = new StringBuilder();
+        for (String tag : tags) {
             builder.append(tag).append(',');
         }
-        builder.deleteCharAt(builder.length()-1);
+        builder.deleteCharAt(builder.length() - 1);
         return catalogClient.getOffersByTags(builder.toString());
     }
 
@@ -38,7 +37,7 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public List<Offer> getOffersInPriceRange(Double belowPrice, double uponPrice) throws ClientException {
-        return catalogClient.getOffersInPriceRange(belowPrice,uponPrice);
+        return catalogClient.getOffersInPriceRange(belowPrice, uponPrice);
     }
 
     @Override

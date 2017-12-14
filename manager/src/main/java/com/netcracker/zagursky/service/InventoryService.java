@@ -11,14 +11,24 @@ import java.util.List;
  */
 public interface InventoryService {
     Order createOrder(Order order) throws ClientException;
+
     Order addOrderItem(Integer id, OrderItem orderItem) throws ClientException;
+
     List<Order> getCustomerOrders(String email) throws ClientException;
+
     List<Order> getPaidCustomerOrders(String email) throws ClientException;
+
     List<Order> getUnpaidCusomerOrders(String email) throws ClientException;
-    Double  getTotalPriceOfCustomerOrders(String email) throws ClientException;
+
+    Double getTotalPriceOfCustomerOrders(String email) throws ClientException;
+
     Order payForOrder(Order order) throws ClientException;
+
     List<Order> getOrderByStatus(Boolean status) throws ClientException;
+
     Order getOrder(Integer id) throws ClientException;
+
     Order updateOrder(Order order) throws ClientException;
+
     void deleteOrder(Integer id) throws ClientException;
 }

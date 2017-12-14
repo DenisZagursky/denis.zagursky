@@ -12,9 +12,13 @@ import java.util.List;
  */
 public interface CatalogService {
     List<Offer> getOffersByTags(List<String> tags) throws ClientException;
+
     List<Offer> getOffersByCategory(String categoryName) throws ClientException;
-    List<Offer> getOffersInPriceRange(Double belowPrice,double uponPrice) throws ClientException;
+
+    List<Offer> getOffersInPriceRange(Double belowPrice, double uponPrice) throws ClientException;
+
     List<Category> getCategories() throws ClientException;
+
     List<Tag> getTags() throws ClientException;
 
 }

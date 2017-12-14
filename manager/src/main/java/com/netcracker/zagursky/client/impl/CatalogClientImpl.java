@@ -35,7 +35,7 @@ public class CatalogClientImpl implements CatalogClient {
     public List<Offer> getOffersByTags(String tags) throws ClientException {
         try {
             HttpEntity request = new HttpEntity(headers);
-            ResponseEntity<List<Offer>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG+ "offers/tags?tags="+tags,
+            ResponseEntity<List<Offer>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG + "offers/tags?tags=" + tags,
                     HttpMethod.GET,
                     request,
                     new ParameterizedTypeReference<List<Offer>>() {
@@ -49,8 +49,8 @@ public class CatalogClientImpl implements CatalogClient {
     @Override
     public List<Offer> getOffersByCategory(String categoryName) throws ClientException {
         try {
-            HttpEntity request = new HttpEntity( headers);
-            ResponseEntity<List<Offer>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG+ "offers/category/"+categoryName,
+            HttpEntity request = new HttpEntity(headers);
+            ResponseEntity<List<Offer>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG + "offers/category/" + categoryName,
                     HttpMethod.GET,
                     request,
                     new ParameterizedTypeReference<List<Offer>>() {
@@ -64,8 +64,8 @@ public class CatalogClientImpl implements CatalogClient {
     @Override
     public List<Offer> getOffersInPriceRange(Double belowPrice, double uponPrice) throws ClientException {
         try {
-            HttpEntity request = new HttpEntity( headers);
-            ResponseEntity<List<Offer>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG+ "offers/price/"+belowPrice+"/"+uponPrice,
+            HttpEntity request = new HttpEntity(headers);
+            ResponseEntity<List<Offer>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG + "offers/price/" + belowPrice + "/" + uponPrice,
                     HttpMethod.GET,
                     request,
                     new ParameterizedTypeReference<List<Offer>>() {
@@ -79,8 +79,8 @@ public class CatalogClientImpl implements CatalogClient {
     @Override
     public List<Category> getCategories() throws ClientException {
         try {
-            HttpEntity request = new HttpEntity( headers);
-            ResponseEntity<List<Category>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG+ "/categories/",
+            HttpEntity request = new HttpEntity(headers);
+            ResponseEntity<List<Category>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG + "/categories/",
                     HttpMethod.GET,
                     request,
                     new ParameterizedTypeReference<List<Category>>() {
@@ -94,8 +94,8 @@ public class CatalogClientImpl implements CatalogClient {
     @Override
     public List<Tag> getTags() throws ClientException {
         try {
-            HttpEntity request = new HttpEntity( headers);
-            ResponseEntity<List<Tag>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG+ "/tags/",
+            HttpEntity request = new HttpEntity(headers);
+            ResponseEntity<List<Tag>> orderResponseEntity = restTemplate.exchange(PATH_TO_CATALOG + "/tags/",
                     HttpMethod.GET,
                     request,
                     new ParameterizedTypeReference<List<Tag>>() {

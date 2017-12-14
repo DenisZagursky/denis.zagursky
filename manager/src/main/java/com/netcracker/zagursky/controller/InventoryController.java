@@ -23,7 +23,7 @@ public class InventoryController {
 
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity createOrder(@RequestBody Order order) throws ClientException{
+    public ResponseEntity createOrder(@RequestBody Order order) throws ClientException {
 
         inventoryService.createOrder(order);
         return new ResponseEntity(order, HttpStatus.CREATED);
@@ -31,7 +31,7 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity getOrder(@PathVariable Integer id) throws ClientException{
+    public ResponseEntity getOrder(@PathVariable Integer id) throws ClientException {
 
         Order order = inventoryService.getOrder(id);
         if (order != null) {
@@ -78,7 +78,7 @@ public class InventoryController {
     @RequestMapping(value = "/email/price/{customerEmail}", method = RequestMethod.GET)
     public ResponseEntity getPriceOfCustomersOrders(@PathVariable String customerEmail) throws ClientException {
         Double price = inventoryService.getTotalPriceOfCustomerOrders(customerEmail);
-        if (price!= null) {
+        if (price != null) {
             return new ResponseEntity(price, HttpStatus.OK);
         } else {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -121,14 +121,14 @@ public class InventoryController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateOrder(@RequestBody Order order) throws ClientException {
         inventoryService.updateOrder(order);
-        return new ResponseEntity(order,HttpStatus.OK);
+        return new ResponseEntity(order, HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/payOrder/{id}", method = RequestMethod.PUT)
     public ResponseEntity payOrder(@RequestBody Order order) throws ClientException {
         inventoryService.payForOrder(order);
-        return new ResponseEntity(order,HttpStatus.OK);
+        return new ResponseEntity(order, HttpStatus.OK);
 
     }
 

@@ -33,6 +33,7 @@ public class CatalogController {
         }
 
     }
+
     @RequestMapping(value = "/offers/tags", method = RequestMethod.GET)
     public ResponseEntity getOffersFromTags(@RequestParam List<String> tags) throws ClientException {
         List<Offer> offers = catalogService.getOffersByTags(tags);
@@ -47,7 +48,7 @@ public class CatalogController {
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public ResponseEntity getCategories() throws ClientException {
-        List<Category> categories= catalogService.getCategories();
+        List<Category> categories = catalogService.getCategories();
         if (categories != null) {
             return new ResponseEntity(categories, HttpStatus.OK);
         } else {
@@ -56,9 +57,10 @@ public class CatalogController {
         }
 
     }
+
     @RequestMapping(value = "/tags", method = RequestMethod.GET)
     public ResponseEntity getTags() throws ClientException {
-        List<Tag> tags= catalogService.getTags();
+        List<Tag> tags = catalogService.getTags();
         if (tags != null) {
             return new ResponseEntity(tags, HttpStatus.OK);
         } else {
@@ -69,8 +71,8 @@ public class CatalogController {
     }
 
     @RequestMapping(value = "/offers/price/{belowPrice}/{uponPrice}", method = RequestMethod.GET)
-    public ResponseEntity getOffersByPrice(@PathVariable double belowPrice,@PathVariable double uponPrice) throws ClientException {
-        List<Offer> offers = catalogService.getOffersInPriceRange(belowPrice,uponPrice);
+    public ResponseEntity getOffersByPrice(@PathVariable double belowPrice, @PathVariable double uponPrice) throws ClientException {
+        List<Offer> offers = catalogService.getOffersInPriceRange(belowPrice, uponPrice);
         if (offers != null) {
             return new ResponseEntity(offers, HttpStatus.OK);
         } else {

@@ -21,46 +21,41 @@ public class OrderClientTest {
 
 
     @Test
-    public void getOrder() throws Exception
-    {
+    public void getOrder() throws Exception {
         System.out.println(inventoryClient.getOrderById(2));
     }
+
     @Test
-    public void postOrder() throws Exception
-    {
-        System.out.println(inventoryClient.postOrder(new Order("1","1","1")));
+    public void postOrder() throws Exception {
+        System.out.println(inventoryClient.postOrder(new Order("1", "1", "1")));
     }
 
     @Test
-    public void addOrderItem() throws Exception
-    {
-        System.out.println(inventoryClient.addOrderItem(1,new OrderItem("1","1",1.0,"1")));
+    public void addOrderItem() throws Exception {
+        System.out.println(inventoryClient.addOrderItem(1, new OrderItem("1", "1", 1.0, "1")));
     }
 
     @Test
-    public void getCustumerOrder() throws Exception
-    {
-        List<Order> orders= inventoryClient.getCustumerOrder("1");
+    public void getCustumerOrder() throws Exception {
+        List<Order> orders = inventoryClient.getCustumerOrder("1");
         System.out.println(orders);
     }
 
     @Test
-    public void updateOrder() throws Exception
-    {
-        Order order=inventoryClient.getOrderById(2);
+    public void updateOrder() throws Exception {
+        Order order = inventoryClient.getOrderById(2);
         order.setSignOfThePayment(true);
-        System.out.println( inventoryClient.updateOrder(order));
+        System.out.println(inventoryClient.updateOrder(order));
     }
 
     @Test
-    public void deleteOrder() throws Exception
-    {
-        Order order=inventoryClient.getOrderById(1);
+    public void deleteOrder() throws Exception {
+        Order order = inventoryClient.getOrderById(1);
         inventoryClient.deleteOrder(3);
     }
+
     @Test
-    public void getOrders() throws Exception
-    {
+    public void getOrders() throws Exception {
         System.out.println(inventoryClient.getOrders());
     }
 }
