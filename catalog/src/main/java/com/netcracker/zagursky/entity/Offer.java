@@ -3,6 +3,7 @@ package com.netcracker.zagursky.entity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "offer")
@@ -11,62 +12,51 @@ public class Offer {
     @GeneratedValue
     private int id;
 
+    private boolean status;
     private String name;
     private String description;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Price price;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "offertag", joinColumns = {
-            @JoinColumn(name = "offer_id", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = false)
-
-            })
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "offer_tag",
+            joinColumns = @JoinColumn(name = "offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags = new ArrayList<Tag>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     public Offer() {
 
     }
 
-    public Offer(String name, String description, double valuePrice, String nameCategory) {
+    public Offer(String name, String description) {
         this.name = name;
         this.description = description;
-        price = new Price(valuePrice);
-        category = new Category(nameCategory);
+        status = true;
     }
+
 
     public void addTag(Tag tag) {
         tags.add(tag);
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Offer)) return false;
-
         Offer offer = (Offer) o;
-
-        if (id != offer.id) return false;
-        if (name != null ? !name.equals(offer.name) : offer.name != null) return false;
-        if (description != null ? !description.equals(offer.description) : offer.description != null) return false;
-        if (price != null ? !price.equals(offer.price) : offer.price != null) return false;
-        if (tags != null ? !tags.equals(offer.tags) : offer.tags != null) return false;
-        return category != null ? category.equals(offer.category) : offer.category == null;
+        return id == offer.id &&
+                status == offer.status &&
+                Objects.equals(name, offer.name) &&
+                Objects.equals(description, offer.description);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (tags != null ? tags.hashCode() : 0);
-        result = 31 * result + (category != null ? category.hashCode() : 0);
-        return result;
+        return Objects.hash(id, status, name, description);
     }
 
     public boolean removeTag(Tag tag) {
@@ -109,23 +99,37 @@ public class Offer {
         return tags;
     }
 
-    public Category getCategory() {
-        return category;
+    public boolean getStatus() {
+        return status;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "Offer{" +
                 "id=" + id +
+                ", status=" + status +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", price=" + price +
-                ", tags=" + tags +
-                ", category=" + category +
                 '}';
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

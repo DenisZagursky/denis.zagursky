@@ -1,9 +1,8 @@
 package com.netcracker.zagursky.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +12,7 @@ public class Tag {
     @GeneratedValue
     private int id;
 
+    @Column(unique = true)
     private String name;
 
     public Tag() {
@@ -46,11 +46,10 @@ public class Tag {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Tag{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     public int getId() {
@@ -60,4 +59,21 @@ public class Tag {
     public void setId(int id) {
         this.id = id;
     }
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "offer_tag",
+            joinColumns = @JoinColumn(name = "tag_id"),
+            inverseJoinColumns = @JoinColumn(name = "offer_id"))
+    private List<Offer> offers = new ArrayList<>();
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+
 }

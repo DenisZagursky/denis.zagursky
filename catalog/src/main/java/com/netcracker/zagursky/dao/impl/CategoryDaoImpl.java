@@ -2,8 +2,11 @@ package com.netcracker.zagursky.dao.impl;
 
 import com.netcracker.zagursky.dao.CategoryDao;
 import com.netcracker.zagursky.entity.Category;
+import com.netcracker.zagursky.entity.Offer;
 import com.netcracker.zagursky.exceptions.DbException;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created by Dzenyaa on 14.11.2017.
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CategoryDaoImpl extends GenericDaoImpl<Category, Integer> implements CategoryDao {
     public static final String QUERY_FIND_BY_NAME = "SELECT c FROM Category c WHERE c.name LIKE :custName";
+    private static final String QUERY_GET_OFFERS = "select c from Offer c  where c.category.id=:custName";
 
     {
         setClass(Category.class);
@@ -23,6 +27,17 @@ public class CategoryDaoImpl extends GenericDaoImpl<Category, Integer> implement
                     .setParameter("custName", categoryName)
                     .setMaxResults(1)
                     .getSingleResult();
+        } catch (Exception ex) {
+            throw new DbException("not valid arguments", ex);
+        }
+    }
+
+    @Override
+    public List<Offer> getOffers(Integer id) throws DbException {
+        try {
+            return entityManager.createQuery(QUERY_GET_OFFERS)
+                    .setParameter("custName", id)
+                    .getResultList();
         } catch (Exception ex) {
             throw new DbException("not valid arguments", ex);
         }

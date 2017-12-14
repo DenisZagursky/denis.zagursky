@@ -1,6 +1,8 @@
 package com.netcracker.zagursky.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,10 +12,12 @@ public class Category {
     @GeneratedValue
     private int id;
 
+    @Column(unique = true)
     private String name;
 
-    @ManyToOne(optional = true)
-    private Offer offers;
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Offer> offers = new ArrayList<Offer>();
+
 
     public Category() {
     }
@@ -22,19 +26,31 @@ public class Category {
         name = category;
     }
 
+    public void addOffer(Offer offer) {
+        offers.add(offer);
+    }
+
+    public boolean removeOffer(Offer offer) {
+
+        if (offers.contains(offer)) {
+            offers.remove(offer);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Category)) return false;
         Category category = (Category) o;
         return id == category.id &&
-                Objects.equals(name, category.name) &&
-                Objects.equals(offers, category.offers);
+                Objects.equals(name, category.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, offers);
+        return Objects.hash(id, name);
     }
 
     public String getName() {
@@ -47,19 +63,17 @@ public class Category {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Category{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", offers=").append(offers);
-        sb.append('}');
-        return sb.toString();
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 
-    public Offer getOffers() {
+    public List<Offer> getOffers() {
         return offers;
     }
 
-    public void setOffers(Offer offers) {
+    public void setOffers(List<Offer> offers) {
         this.offers = offers;
     }
 
@@ -70,4 +84,6 @@ public class Category {
     public void setId(int id) {
         this.id = id;
     }
+
+
 }
