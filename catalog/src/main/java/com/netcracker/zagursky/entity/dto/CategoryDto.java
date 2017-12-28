@@ -1,4 +1,4 @@
-package com.netcracker.zagursky.dto;
+package com.netcracker.zagursky.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.netcracker.zagursky.entity.Category;
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class CategoryDto {
     @JsonProperty("id")
-    private Integer id;
+    private int id;
     @JsonProperty("name")
     private String name;
 
@@ -24,10 +24,26 @@ public class CategoryDto {
 
     public static List<CategoryDto> fromModel(List<Category> categories) {
         List<CategoryDto> dto = new ArrayList<>();
+
         for (Category category : categories) {
             dto.add(CategoryDto.fromModel(category));
         }
         return dto;
+    }
+
+    public static List<Category> getCategoryEntity(List<CategoryDto> categoryDtoList) {
+        List<Category> categories = new ArrayList<>();
+        for (CategoryDto categoryDto : categoryDtoList) {
+            categories.add(CategoryDto.getCategoryEntity(categoryDto));
+        }
+        return categories;
+    }
+
+    public static Category getCategoryEntity(CategoryDto categoryDto) {
+        Category category = new Category();
+        category.setId(categoryDto.getId());
+        category.setName(categoryDto.getName());
+        return category;
     }
 
     public Integer getId() {

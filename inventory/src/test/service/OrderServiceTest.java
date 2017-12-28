@@ -12,14 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-//import com.netcracker.zagursky.configuration.RepositoryConfiguration;
 
 /**
  * Created by Dzenyaa on 14.11.2017.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-//@Import(RepositoryConfiguration.class)
 public class OrderServiceTest {
     Order order;
     @Autowired

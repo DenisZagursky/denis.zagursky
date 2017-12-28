@@ -44,7 +44,6 @@ public class OrderClientTest {
     @Test
     public void updateOrder() throws Exception {
         Order order = inventoryClient.getOrderById(2);
-        order.setSignOfThePayment(true);
         System.out.println(inventoryClient.updateOrder(order));
     }
 

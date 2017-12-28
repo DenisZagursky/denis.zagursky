@@ -3,7 +3,7 @@ package com.netcracker.zagursky.client.impl;
 import com.netcracker.zagursky.client.InventoryClient;
 import com.netcracker.zagursky.entity.inventory.Order;
 import com.netcracker.zagursky.entity.inventory.OrderItem;
-import com.netcracker.zagursky.exception.ClientException;
+import com.netcracker.zagursky.exception.ManagerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -29,16 +29,16 @@ public class InventoryClientImpl implements InventoryClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public Order getOrderById(Integer id) throws ClientException {
+    public Order getOrderById(Integer id) throws ManagerException {
         try {
             ResponseEntity<Order> orderResponseEntity = restTemplate.getForEntity(PATH_TO_INVENTORY + "orders/" + id, Order.class);
             return orderResponseEntity.getBody();
         } catch (Exception e) {
-            throw new ClientException("wrong get Order", e);
+            throw new ManagerException("wrong get Order", e);
         }
     }
 
-    public Order postOrder(Order order) throws ClientException {
+    public Order postOrder(Order order) throws ManagerException {
         try {
             HttpEntity request = new HttpEntity(order, headers);
             ResponseEntity<Order> orderResponseEntity = restTemplate.postForEntity(PATH_TO_INVENTORY + "orders/",
@@ -46,63 +46,75 @@ public class InventoryClientImpl implements InventoryClient {
                     Order.class);
             return orderResponseEntity.getBody();
         } catch (Exception e) {
-            throw new ClientException("wrong post Order", e);
+            throw new ManagerException("wrong post Order", e);
         }
     }
 
     @Override
-    public Order addOrderItem(Integer id, OrderItem orderItem) throws ClientException {
+    public Order addOrderItem(Integer id, OrderItem orderItem) throws ManagerException {
+        ResponseEntity<Order> orderResponseEntity;
         try {
             HttpEntity request = new HttpEntity(orderItem, headers);
-            ResponseEntity<Order> orderResponseEntity = restTemplate.exchange(PATH_TO_INVENTORY + "orders/addOrderItem/" + id,
+         orderResponseEntity = restTemplate.exchange(PATH_TO_INVENTORY + "orders/OrderItem/" + id,
                     HttpMethod.PUT,
                     request,
                     Order.class);
             return orderResponseEntity.getBody();
         } catch (Exception e) {
-            throw new ClientException("wrong add orderitem", e);
+            throw new ManagerException("wrong add orderitem", e);
         }
     }
 
     @Override
-    public List<Order> getCustumerOrder(String email) throws ClientException {
+    public List<Order> getCustumerOrder(String email) throws ManagerException {
         try {
-            HttpEntity request = new HttpEntity(email, headers);
-            ResponseEntity<List<Order>> orderResponseEntity = restTemplate.exchange(PATH_TO_INVENTORY + "orders/email/" + email,
+            HttpEntity request = new HttpEntity( headers);
+            ResponseEntity<List<Order>> orderResponseEntity = restTemplate.exchange(PATH_TO_INVENTORY + "orders/email/?customerEmail="+email,
                     HttpMethod.GET,
                     request,
                     new ParameterizedTypeReference<List<Order>>() {
                     });
             return orderResponseEntity.getBody();
         } catch (Exception e) {
-            throw new ClientException("wrong get custumers orders", e);
+            throw new ManagerException("wrong get custumers orders", e);
         }
     }
 
     @Override
-    public Order updateOrder(Order order) throws ClientException {
+    public Order updateOrder(Order order) throws ManagerException {
         try {
             HttpEntity request = new HttpEntity(order, headers);
             ResponseEntity<Order> orderResponseEntity = restTemplate.exchange(PATH_TO_INVENTORY + "orders/" + order.getId(), HttpMethod.PUT, request, Order.class);
             return orderResponseEntity.getBody();
         } catch (Exception e) {
-            throw new ClientException("wrong update order", e);
+            throw new ManagerException("wrong update order", e);
         }
     }
 
     @Override
-    public void deleteOrder(Integer id) throws ClientException {
+    public Order payOrder(Integer id) throws ManagerException {
+        try {
+            HttpEntity request = new HttpEntity( headers);
+            ResponseEntity<Order> orderResponseEntity = restTemplate.exchange(PATH_TO_INVENTORY + "orders/status/"+id, HttpMethod.PUT, request, Order.class);
+            return orderResponseEntity.getBody();
+        } catch (Exception e) {
+            throw new ManagerException("wrong pay order", e);
+        }
+    }
+
+    @Override
+    public void deleteOrder(Integer id) throws ManagerException {
 
         try {
             HttpEntity request = new HttpEntity(headers);
             restTemplate.delete(PATH_TO_INVENTORY + "orders/" + id, HttpMethod.DELETE, request);
         } catch (Exception e) {
-            throw new ClientException("wrong add orderitem", e);
+            throw new ManagerException("wrong delete order", e);
         }
     }
 
     @Override
-    public List<Order> getOrders() throws ClientException {
+    public List<Order> getOrders() throws ManagerException {
         try {
             HttpEntity request = new HttpEntity(headers);
             ResponseEntity<List<Order>> orderResponseEntity = restTemplate.exchange(PATH_TO_INVENTORY + "orders/",
@@ -111,7 +123,7 @@ public class InventoryClientImpl implements InventoryClient {
                     });
             return orderResponseEntity.getBody();
         } catch (Exception e) {
-            throw new ClientException("wrong get custumers orders", e);
+            throw new ManagerException("wrong get  orders", e);
         }
     }
 

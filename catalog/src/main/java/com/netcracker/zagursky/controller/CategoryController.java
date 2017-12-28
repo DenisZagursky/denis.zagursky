@@ -1,11 +1,13 @@
 package com.netcracker.zagursky.controller;
 
-import com.netcracker.zagursky.dto.CategoryDto;
-import com.netcracker.zagursky.dto.OfferDto;
+import com.netcracker.zagursky.entity.dto.CategoryDto;
+import com.netcracker.zagursky.entity.dto.OfferDto;
 import com.netcracker.zagursky.entity.Category;
 import com.netcracker.zagursky.entity.Offer;
-import com.netcracker.zagursky.exceptions.DbException;
+import com.netcracker.zagursky.exceptions.CatalogException;
 import com.netcracker.zagursky.service.CategoryService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,26 +22,29 @@ import java.util.List;
 @RequestMapping("api/v1/categories")
 public class CategoryController {
 
+    private final static Logger LOGGER = LogManager.getLogger("logger");
+
     @Autowired
     private CategoryService categoryService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity createCategory(@RequestBody Category category) throws DbException {
-
+    public ResponseEntity createCategory(@RequestBody CategoryDto categoryDto) throws CatalogException {
+        Category category=CategoryDto.getCategoryEntity(categoryDto);
         categoryService.persist(category);
         return new ResponseEntity(CategoryDto.fromModel(category), HttpStatus.CREATED);
 
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateCategory(@RequestBody Category category) throws DbException {
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    public ResponseEntity updateCategory(@RequestBody CategoryDto categoryDto) throws CatalogException {
+       Category category=CategoryDto.getCategoryEntity(categoryDto);
         categoryService.update(category);
         return new ResponseEntity(CategoryDto.fromModel(category), HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity getCategories() throws DbException {
+    public ResponseEntity getCategories() throws CatalogException {
         List<Category> categories = categoryService.findAll();
         if (categories != null) {
             return new ResponseEntity(CategoryDto.fromModel(categories), HttpStatus.OK);
@@ -50,8 +55,8 @@ public class CategoryController {
     }
 
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity getCategoryById(@PathVariable Integer id) throws DbException {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity getCategoryById(@PathVariable Integer id) throws CatalogException {
 
         Category category = categoryService.findById(id);
         if (category != null) {
@@ -63,7 +68,7 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteCategory(@PathVariable Integer id) throws DbException {
+    public ResponseEntity deleteCategory(@PathVariable Integer id) throws CatalogException {
 
         Category category = categoryService.findById(id);
         if (category != null) {
@@ -76,7 +81,7 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
-    public ResponseEntity getCategoryByName(@PathVariable String name) throws DbException {
+    public ResponseEntity getCategoryByName(@PathVariable String name) throws CatalogException {
         Category category = categoryService.findByName(name);
         if (category != null) {
             return new ResponseEntity(CategoryDto.fromModel(category), HttpStatus.OK);
@@ -87,7 +92,7 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/offers/{id}", method = RequestMethod.GET)
-    public ResponseEntity getCategoryOffers(@PathVariable Integer id) throws DbException {
+    public ResponseEntity getCategoryOffers(@PathVariable Integer id) throws CatalogException {
         List<Offer> offer = categoryService.getOffers(id);
         if (offer != null) {
             return new ResponseEntity(OfferDto.fromModel(offer), HttpStatus.OK);
@@ -97,8 +102,9 @@ public class CategoryController {
         }
     }
 
-    @ExceptionHandler(DbException.class)
-    public ResponseEntity handleDbException(DbException e) {
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(CatalogException.class)
+    public ResponseEntity handleDbException(CatalogException e) {
+        LOGGER.error(e);
+        return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
     }
 }

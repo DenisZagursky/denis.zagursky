@@ -1,7 +1,9 @@
 package ServiceTest;
 
 import com.netcracker.zagursky.Application;
+import com.netcracker.zagursky.entity.Offer;
 import com.netcracker.zagursky.entity.Tag;
+import com.netcracker.zagursky.service.OfferService;
 import com.netcracker.zagursky.service.TagService;
 import org.junit.After;
 import org.junit.Before;
@@ -22,6 +24,8 @@ public class TagServiceTest {
     static Tag tag;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private OfferService offerService;
 
     @Before
     public void init() throws Exception {
@@ -38,6 +42,18 @@ public class TagServiceTest {
         tagService.persist(tag);
         assertNotNull(tagService.findByName("name"));
         tagService.delete(tag.getId());
+    }
+
+    @Test
+    public void getOffers() throws Exception {
+        tagService.persist(tag);
+        Offer offer = new Offer("1", "1");
+
+        offerService.persist(offer);
+        offerService.addTag(offer.getId(), tag);
+        assertNotNull(tagService.getOffers(tag.getId()));
+        tagService.delete(tag.getId());
+        offerService.delete(offer.getId());
     }
 
 }

@@ -3,7 +3,7 @@ package com.netcracker.zagursky.dao.impl;
 import com.netcracker.zagursky.dao.CategoryDao;
 import com.netcracker.zagursky.entity.Category;
 import com.netcracker.zagursky.entity.Offer;
-import com.netcracker.zagursky.exceptions.DbException;
+import com.netcracker.zagursky.exceptions.CatalogException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,25 +21,25 @@ public class CategoryDaoImpl extends GenericDaoImpl<Category, Integer> implement
     }
 
 
-    public Category findByName(String categoryName) throws DbException {
+    public Category findByName(String categoryName) throws CatalogException {
         try {
             return (Category) entityManager.createQuery(QUERY_FIND_BY_NAME)
                     .setParameter("custName", categoryName)
                     .setMaxResults(1)
                     .getSingleResult();
         } catch (Exception ex) {
-            throw new DbException("not valid arguments", ex);
+            throw new CatalogException("not valid arguments", ex);
         }
     }
 
     @Override
-    public List<Offer> getOffers(Integer id) throws DbException {
+    public List<Offer> getOffers(Integer id) throws CatalogException {
         try {
             return entityManager.createQuery(QUERY_GET_OFFERS)
                     .setParameter("custName", id)
                     .getResultList();
         } catch (Exception ex) {
-            throw new DbException("not valid arguments", ex);
+            throw new CatalogException("not valid arguments", ex);
         }
     }
 }

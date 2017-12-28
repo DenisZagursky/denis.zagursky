@@ -1,8 +1,10 @@
 package com.netcracker.zagursky.service.impl;
 
 import com.netcracker.zagursky.dao.GenericDao;
-import com.netcracker.zagursky.exceptions.DbException;
+import com.netcracker.zagursky.exceptions.CatalogException;
 import com.netcracker.zagursky.service.GenericService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,35 +17,52 @@ import java.util.List;
 @Transactional
 @Service
 public abstract class GenericServiceImpl<T, ID> implements GenericService<T, ID> {
+
+    private final static Logger LOGGER = LogManager.getLogger("logger");
+
     @Autowired
     private GenericDao<T, ID> genericDao;
 
     @Override
     @Transactional(readOnly = true)
-    public T findById(ID id) throws DbException {
-        return genericDao.findById(id);
+    public T findById(ID id) throws CatalogException {
+        LOGGER.debug("find by id. Start transaction");
+        T entity = genericDao.findById(id);
+        LOGGER.debug("find by id. End transaction. Entity:" + entity);
+        return entity;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<T> findAll() throws DbException {
-        return genericDao.findAll();
+    public List<T> findAll() throws CatalogException {
+        LOGGER.debug("find all. Start transaction");
+        List<T> entities = genericDao.findAll();
+        LOGGER.debug("find all. End transaction. Entity:" + entities);
+        return entities;
     }
 
     @Override
-    public T persist(T entity) throws DbException {
-        return genericDao.persist(entity);
-
+    public T persist(T entity) throws CatalogException {
+        LOGGER.debug("persist entity. Start transaction");
+        entity = genericDao.persist(entity);
+        LOGGER.debug("persist entity. End transaction. Entity:" + entity.toString());
+        return entity;
     }
 
 
     @Override
-    public void delete(ID id) throws DbException {
+    public void delete(ID id) throws CatalogException {
+        LOGGER.debug("delete entity. Start transaction");
         genericDao.delete(id);
+        LOGGER.debug("delete entity. End transaction.");
+
     }
 
     @Override
-    public T update(T entity) throws DbException {
-        return genericDao.update(entity);
+    public T update(T entity) throws CatalogException {
+        LOGGER.debug("update entity. Start transaction");
+        entity = genericDao.update(entity);
+        LOGGER.debug("update entity. End transaction. Entity:" + entity.toString());
+        return entity;
     }
 }

@@ -1,9 +1,13 @@
 package com.netcracker.zagursky.controller;
 
+import com.netcracker.zagursky.entity.catalog.Offer;
 import com.netcracker.zagursky.entity.inventory.Order;
-import com.netcracker.zagursky.entity.inventory.OrderItem;
-import com.netcracker.zagursky.exception.ClientException;
+import com.netcracker.zagursky.entity.inventory.Status;
+import com.netcracker.zagursky.exception.ManagerException;
+import com.netcracker.zagursky.service.CatalogService;
 import com.netcracker.zagursky.service.InventoryService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +22,24 @@ import java.util.List;
 @RequestMapping("api/v1/inventory")
 public class InventoryController {
 
+    private static final Logger LOGGER = LogManager.getLogger("logger");
+
     @Autowired
     private InventoryService inventoryService;
 
+    @Autowired
+    private CatalogService catalogService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity createOrder(@RequestBody Order order) throws ClientException {
+    public ResponseEntity createOrder(@RequestBody String mail) throws ManagerException {
 
-        inventoryService.createOrder(order);
-        return new ResponseEntity(order, HttpStatus.CREATED);
+        return new ResponseEntity(inventoryService.createOrder(mail),HttpStatus.CREATED);
+
 
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity getOrder(@PathVariable Integer id) throws ClientException {
+    public ResponseEntity getOrder(@PathVariable Integer id) throws ManagerException {
 
         Order order = inventoryService.getOrder(id);
         if (order != null) {
@@ -42,8 +50,8 @@ public class InventoryController {
         }
     }
 
-    @RequestMapping(value = "/email/{customerEmail}", method = RequestMethod.GET)
-    public ResponseEntity getCustomersOrders(@PathVariable String customerEmail) throws ClientException {
+    @RequestMapping(value = "/email/", method = RequestMethod.GET)
+    public ResponseEntity getCustomersOrders(@RequestParam String customerEmail) throws ManagerException {
         List<Order> orders = inventoryService.getCustomerOrders(customerEmail);
         if (orders != null) {
             return new ResponseEntity(orders, HttpStatus.OK);
@@ -53,8 +61,8 @@ public class InventoryController {
         }
     }
 
-    @RequestMapping(value = "/email/paid{customerEmail}", method = RequestMethod.GET)
-    public ResponseEntity getPaidCustomersOrders(@PathVariable String customerEmail) throws ClientException {
+    @RequestMapping(value = "/email/paid", method = RequestMethod.GET)
+    public ResponseEntity getPaidCustomersOrders(@RequestParam String customerEmail) throws ManagerException {
         List<Order> orders = inventoryService.getPaidCustomerOrders(customerEmail);
         if (orders != null) {
             return new ResponseEntity(orders, HttpStatus.OK);
@@ -64,8 +72,8 @@ public class InventoryController {
         }
     }
 
-    @RequestMapping(value = "/email/unpaid{customerEmail}", method = RequestMethod.GET)
-    public ResponseEntity getUnpaidCustomersOrders(@PathVariable String customerEmail) throws ClientException {
+    @RequestMapping(value = "/email/unpaid", method = RequestMethod.GET)
+    public ResponseEntity getUnpaidCustomersOrders(@RequestParam String customerEmail) throws ManagerException {
         List<Order> orders = inventoryService.getUnpaidCusomerOrders(customerEmail);
         if (orders != null) {
             return new ResponseEntity(orders, HttpStatus.OK);
@@ -75,8 +83,8 @@ public class InventoryController {
         }
     }
 
-    @RequestMapping(value = "/email/price/{customerEmail}", method = RequestMethod.GET)
-    public ResponseEntity getPriceOfCustomersOrders(@PathVariable String customerEmail) throws ClientException {
+    @RequestMapping(value = "/email/price", method = RequestMethod.GET)
+    public ResponseEntity getPriceOfCustomersOrders(@RequestParam String customerEmail) throws ManagerException {
         Double price = inventoryService.getTotalPriceOfCustomerOrders(customerEmail);
         if (price != null) {
             return new ResponseEntity(price, HttpStatus.OK);
@@ -87,7 +95,7 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "/status/{status}", method = RequestMethod.GET)
-    public ResponseEntity getOrdersByStatus(@PathVariable Boolean status) throws ClientException {
+    public ResponseEntity getOrdersByStatus(@PathVariable Status status) throws ManagerException {
         List<Order> orders = inventoryService.getOrderByStatus(status);
         if (orders != null) {
             return new ResponseEntity(orders, HttpStatus.OK);
@@ -99,43 +107,44 @@ public class InventoryController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteOrder(@PathVariable Integer id) throws ClientException {
+    public ResponseEntity deleteOrder(@PathVariable Integer id) throws ManagerException {
 
-        Order order = inventoryService.getOrder(id);
-        if (order != null) {
             inventoryService.deleteOrder(id);
             return new ResponseEntity(HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/addOrderItem/{idOrder}/{idOffer}", method = RequestMethod.PUT)
+    public ResponseEntity putOrderItem(@PathVariable Integer idOrder, @PathVariable Integer idOffer) throws ManagerException {
+        Offer offer = catalogService.getOfferById(idOffer);
+        if (offer != null) {
+            return new ResponseEntity(inventoryService.addOrderItem(idOrder, offer), HttpStatus.OK);
         } else {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+
 
         }
     }
 
-    @RequestMapping(value = "/addOrderItem/{id}", method = RequestMethod.PUT)
-    public ResponseEntity putOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws ClientException {
-
-        return new ResponseEntity(inventoryService.addOrderItem(id, orderItem), HttpStatus.OK);
-
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateOrder(@RequestBody Order order) throws ClientException {
+    public ResponseEntity updateOrder(@RequestBody Order order) throws ManagerException {
         inventoryService.updateOrder(order);
         return new ResponseEntity(order, HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/payOrder/{id}", method = RequestMethod.PUT)
-    public ResponseEntity payOrder(@RequestBody Order order) throws ClientException {
-        inventoryService.payForOrder(order);
-        return new ResponseEntity(order, HttpStatus.OK);
+    public ResponseEntity payOrder(Integer id) throws ManagerException {
+
+        return new ResponseEntity(inventoryService.payForOrder(id), HttpStatus.OK);
 
     }
 
 
-    @ExceptionHandler(ClientException.class)
-    public ResponseEntity handleDbException(ClientException e) {
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(ManagerException.class)
+    public ResponseEntity handleException(ManagerException e) {
+        LOGGER.error(e);
+        return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
 }

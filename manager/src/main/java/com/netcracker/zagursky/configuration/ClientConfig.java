@@ -11,18 +11,18 @@ import org.springframework.web.client.RestTemplate;
  */
 @Configuration
 public class ClientConfig {
+
     @Bean
-    RestTemplate restTemplate() {
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
     @Bean
-    HttpHeaders headers() {
+    public HttpHeaders headers() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Accept", "application/json;charset=utf-8");
         return headers;
     }
-
 
 }

@@ -1,8 +1,9 @@
 package com.netcracker.zagursky.service;
 
+import com.netcracker.zagursky.entity.catalog.Offer;
 import com.netcracker.zagursky.entity.inventory.Order;
-import com.netcracker.zagursky.entity.inventory.OrderItem;
-import com.netcracker.zagursky.exception.ClientException;
+import com.netcracker.zagursky.entity.inventory.Status;
+import com.netcracker.zagursky.exception.ManagerException;
 
 import java.util.List;
 
@@ -10,25 +11,25 @@ import java.util.List;
  * Created by Dzenyaa on 09.12.2017.
  */
 public interface InventoryService {
-    Order createOrder(Order order) throws ClientException;
+    Order createOrder(String mail) throws ManagerException;
 
-    Order addOrderItem(Integer id, OrderItem orderItem) throws ClientException;
+    Order addOrderItem(Integer idOrder, Offer offer) throws ManagerException;
 
-    List<Order> getCustomerOrders(String email) throws ClientException;
+    List<Order> getCustomerOrders(String email) throws ManagerException;
 
-    List<Order> getPaidCustomerOrders(String email) throws ClientException;
+    List<Order> getPaidCustomerOrders(String email) throws ManagerException;
 
-    List<Order> getUnpaidCusomerOrders(String email) throws ClientException;
+    List<Order> getUnpaidCusomerOrders(String email) throws ManagerException;
 
-    Double getTotalPriceOfCustomerOrders(String email) throws ClientException;
+    Double getTotalPriceOfCustomerOrders(String email) throws ManagerException;
 
-    Order payForOrder(Order order) throws ClientException;
+    Order payForOrder(Integer id) throws ManagerException;
 
-    List<Order> getOrderByStatus(Boolean status) throws ClientException;
+    List<Order> getOrderByStatus(Status status) throws ManagerException;
 
-    Order getOrder(Integer id) throws ClientException;
+    Order getOrder(Integer id) throws ManagerException;
 
-    Order updateOrder(Order order) throws ClientException;
+    Order updateOrder(Order order) throws ManagerException;
 
-    void deleteOrder(Integer id) throws ClientException;
+    void deleteOrder(Integer id) throws ManagerException;
 }

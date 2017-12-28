@@ -1,7 +1,7 @@
 package com.netcracker.zagursky.dao.impl;
 
 import com.netcracker.zagursky.dao.GenericDao;
-import com.netcracker.zagursky.exceptions.DbException;
+import com.netcracker.zagursky.exceptions.CatalogException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -19,53 +19,53 @@ public class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
         this.type = classToSet;
     }
 
-    public T findById(ID id) throws DbException {
+    public T findById(ID id) throws CatalogException {
         try {
             return entityManager.find(type, id);
         } catch (Exception ex) {
-            throw new DbException("not valid arguments", ex);
+            throw new CatalogException("not valid arguments", ex);
         }
 
 
     }
 
-    public List<T> findAll() throws DbException {
+    public List<T> findAll() throws CatalogException {
         try {
             return entityManager.createQuery("from " + type.getName())
                     .getResultList();
         } catch (Exception ex) {
-            throw new DbException("not valid arguments", ex);
+            throw new CatalogException("not valid arguments", ex);
         }
 
     }
 
-    public T persist(T entity) throws DbException {
+    public T persist(T entity) throws CatalogException {
         try {
 
             entityManager.persist(entity);
             return entity;
 
         } catch (Exception ex) {
-            throw new DbException("wrong persist object", ex);
+            throw new CatalogException("wrong persist object", ex);
         }
     }
 
 
-    public void delete(ID id) throws DbException {
+    public void delete(ID id) throws CatalogException {
         try {
             T objectForRemove = entityManager.find(type, id);
             entityManager.remove(objectForRemove);
         } catch (Exception ex) {
-            throw new DbException("wrong delete object", ex);
+            throw new CatalogException("wrong delete object", ex);
         }
     }
 
-    public T update(T entity) throws DbException {
+    public T update(T entity) throws CatalogException {
         try {
             entityManager.merge(entity);
             return entity;
         } catch (Exception ex) {
-            throw new DbException("wrong update object", ex);
+            throw new CatalogException("wrong update object", ex);
         }
     }
 

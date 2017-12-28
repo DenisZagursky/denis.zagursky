@@ -16,9 +16,9 @@ public class Order {
     private int totalCount;
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
     private String costumersEmail;
-    private Date orderDate;
+    private Date orderDate=new Date();
     private Date dateOfThePayment;
-    private boolean signOfThePayment;
+    private Status status;
 
     public Order() {
     }
@@ -27,8 +27,6 @@ public class Order {
         this.name = name;
         this.description = description;
         this.costumersEmail = costumersEmail;
-        orderDate = new Date();
-        signOfThePayment = false;
     }
 
 
@@ -57,17 +55,18 @@ public class Order {
         return id == order.id &&
                 Double.compare(order.totalPrice, totalPrice) == 0 &&
                 totalCount == order.totalCount &&
-                signOfThePayment == order.signOfThePayment &&
                 Objects.equals(name, order.name) &&
                 Objects.equals(description, order.description) &&
+                Objects.equals(orderItems, order.orderItems) &&
                 Objects.equals(costumersEmail, order.costumersEmail) &&
                 Objects.equals(orderDate, order.orderDate) &&
-                Objects.equals(dateOfThePayment, order.dateOfThePayment);
+                Objects.equals(dateOfThePayment, order.dateOfThePayment) &&
+                status == order.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, totalPrice, totalCount, costumersEmail, orderDate, dateOfThePayment, signOfThePayment);
+        return Objects.hash(id, name, description, totalPrice, totalCount, orderItems, costumersEmail, orderDate, dateOfThePayment, status);
     }
 
     public int getId() {
@@ -122,34 +121,32 @@ public class Order {
         return dateOfThePayment;
     }
 
-    public Boolean getSignOfThePayment() {
-        return signOfThePayment;
+
+    public Status getStatus() {
+        return status;
     }
 
-    public void setSignOfThePayment(boolean signOfThePayment) {
-        if (signOfThePayment) {
-            dateOfThePayment = new Date();
-        } else {
-            dateOfThePayment = null;
+    public void setStatus(Status status) {
+        if(status==Status.PAID)
+        {
+            dateOfThePayment=new Date();
         }
-        this.signOfThePayment = signOfThePayment;
+        this.status = status;
     }
-
 
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", name=" + name +
-                ", description=" + description +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", totalPrice=" + totalPrice +
                 ", totalCount=" + totalCount +
                 ", orderItems=" + orderItems +
                 ", costumersEmail='" + costumersEmail + '\'' +
                 ", orderDate=" + orderDate +
                 ", dateOfThePayment=" + dateOfThePayment +
-                ", signOfThePayment=" + signOfThePayment +
+                ", status=" + status +
                 '}';
     }
-
 }

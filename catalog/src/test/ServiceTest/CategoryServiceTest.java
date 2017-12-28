@@ -2,7 +2,9 @@ package ServiceTest;
 
 import com.netcracker.zagursky.Application;
 import com.netcracker.zagursky.entity.Category;
+import com.netcracker.zagursky.entity.Offer;
 import com.netcracker.zagursky.service.CategoryService;
+import com.netcracker.zagursky.service.OfferService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,8 @@ public class CategoryServiceTest {
     static Category category;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private OfferService genericDao;
 
     @Before
     public void init() throws Exception {
@@ -39,6 +43,15 @@ public class CategoryServiceTest {
         categoryService.persist(category);
         assertNotNull(categoryService.findByName("name"));
         categoryService.delete(category.getId());
+    }
+
+    @Test
+    public void getOffers() throws Exception {
+        categoryService.persist(category);
+        Offer offer = new Offer();
+        offer.setCategory(category);
+        genericDao.persist(offer);
+        System.out.println(categoryService.getOffers(category.getId()));
     }
 
 }

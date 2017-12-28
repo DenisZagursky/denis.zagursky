@@ -3,7 +3,7 @@ package com.netcracker.zagursky.dao.impl;
 import com.netcracker.zagursky.dao.OrderDao;
 import com.netcracker.zagursky.entity.Order;
 import com.netcracker.zagursky.entity.OrderItem;
-import com.netcracker.zagursky.exceptions.DbException;
+import com.netcracker.zagursky.exceptions.InventoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @Repository
-//@Transactional(rollbackOn = DbException.class)
+//@Transactional(rollbackOn = InventoryException.class)
 public class OrderDaoImpl extends GenericDaoImpl<Order, Integer> implements OrderDao {
     public static final String QUERY_FIND_ORDER_ITEMS = "  SELECT p FROM Order c join c.orderItems p WHERE c.id =:custName";
 
@@ -27,13 +27,13 @@ public class OrderDaoImpl extends GenericDaoImpl<Order, Integer> implements Orde
         type = Order.class;
     }
 
-    public List<OrderItem> getOrderItems(int id) throws DbException {
+    public List<OrderItem> getOrderItems(int id) throws InventoryException {
         try {
             return entityManager.createQuery(QUERY_FIND_ORDER_ITEMS)
                     .setParameter("custName", id)
                     .getResultList();
         } catch (Exception ex) {
-            throw new DbException("not valid arguments", ex);
+            throw new InventoryException("not valid arguments", ex);
         }
     }
 }

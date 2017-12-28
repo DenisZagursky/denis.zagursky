@@ -11,17 +11,13 @@ public class OrderItem {
     @Id
     @GeneratedValue
     private int id;
-
     private String name;
     private String description;
-
     @ElementCollection
     @CollectionTable(name = "tagForOrderItem", joinColumns = @JoinColumn(name = "orderitem_id"))
     @Column(name = "tags")
     private List<String> tags = new ArrayList<String>();
     private double price;
-
-
     private String category;
 
     public OrderItem() {

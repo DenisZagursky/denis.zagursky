@@ -2,8 +2,10 @@ package com.netcracker.zagursky.controller;
 
 import com.netcracker.zagursky.entity.Order;
 import com.netcracker.zagursky.entity.OrderItem;
-import com.netcracker.zagursky.exceptions.DbException;
+import com.netcracker.zagursky.exceptions.InventoryException;
 import com.netcracker.zagursky.service.OrderService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,26 +20,27 @@ import java.util.List;
 @RequestMapping("api/v1/orders")
 public class OrderController {
 
+    private final static Logger LOGGER = LogManager.getLogger("logger");
+
     @Autowired
     private OrderService orderService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity createOrder(@RequestBody Order order) throws DbException {
-
+    public ResponseEntity createOrder(@RequestBody Order order) throws InventoryException {
         orderService.persist(order);
         return new ResponseEntity(order, HttpStatus.CREATED);
 
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateOrder(@RequestBody Order order) throws DbException {
+    public ResponseEntity updateOrder(@RequestBody Order order) throws InventoryException {
         orderService.update(order);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(order,HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity getOrders() throws DbException {
+    public ResponseEntity getOrders() throws InventoryException {
         List<Order> orders = orderService.findAll();
         if (orders != null) {
             return new ResponseEntity(orders, HttpStatus.OK);
@@ -49,7 +52,7 @@ public class OrderController {
 
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity getOrder(@PathVariable Integer id) throws DbException {
+    public ResponseEntity getOrder(@PathVariable Integer id) throws InventoryException {
 
         Order order = orderService.findById(id);
         if (order != null) {
@@ -60,8 +63,8 @@ public class OrderController {
         }
     }
 
-    @RequestMapping(value = "/email/{customerEmail}", method = RequestMethod.GET)
-    public ResponseEntity getCustomersOrders(@PathVariable String customerEmail) throws DbException {
+    @RequestMapping(value = "/email/", method = RequestMethod.GET)
+    public ResponseEntity getCustomersOrders(@RequestParam String customerEmail) throws InventoryException {
         List<Order> orders = orderService.getCustomersOrders(customerEmail);
         if (orders != null) {
             return new ResponseEntity(orders, HttpStatus.OK);
@@ -72,34 +75,37 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteOrder(@PathVariable Integer id) throws DbException {
-
-        Order order = orderService.findById(id);
-        if (order != null) {
+    public ResponseEntity deleteOrder(@PathVariable Integer id) throws InventoryException {
             orderService.delete(id);
             return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-
-        }
     }
 
-    @RequestMapping(value = "/{id}/{orderItem}", method = RequestMethod.PUT)
-    public ResponseEntity putOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws DbException {
+    @RequestMapping(value = "/OrderItem/{id}", method = RequestMethod.PUT)
+    public ResponseEntity putOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws InventoryException {
 
         return new ResponseEntity(orderService.addOrderItem(id, orderItem), HttpStatus.OK);
 
     }
 
-    @RequestMapping(value = "/{id}/{orderItem}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws DbException {
+    @RequestMapping(value = "/status/{id}", method = RequestMethod.PUT)
+    public ResponseEntity payOrder(@PathVariable Integer id) throws InventoryException {
+
+        return new ResponseEntity(orderService.payOrder(id), HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/OrderItem/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) throws InventoryException {
         return new ResponseEntity(orderService.removeOrderItem(id, orderItem), HttpStatus.OK);
 
     }
 
-    @ExceptionHandler(DbException.class)
-    public ResponseEntity handleDbException(DbException e) {
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+
+
+    @ExceptionHandler(InventoryException.class)
+    public ResponseEntity handleDbException(InventoryException e) {
+        LOGGER.error("ExceptionHandler found:",e);
+        return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
 }
